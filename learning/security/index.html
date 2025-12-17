@@ -1,0 +1,1618 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../c_for_kernel/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Security Considerations for DeltaOS Kernel - DeltaOS Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#security-considerations-for-deltaos-kernel" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DeltaOS Docs" class="md-header__button md-logo" aria-label="DeltaOS Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DeltaOS Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Security Considerations for DeltaOS Kernel
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="paper" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DeltaOS Docs" class="md-nav__button md-logo" aria-label="DeltaOS Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DeltaOS Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Boot
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Boot
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../boot/protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Delta Boot Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c_for_kernel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C Programming Guide for Kernel Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Considerations for DeltaOS Kernel
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Considerations for DeltaOS Kernel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-security-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Security Matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Principles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-defense-in-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Defense in Depth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fail-secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Fail Secure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-least-privilege" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Least Privilege
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-validate-all-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Validate All Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-vulnerabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Vulnerabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Vulnerabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buffer-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Buffer Overflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integer-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integer Overflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#null-pointer-dereference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Null Pointer Dereference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-after-free" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use After Free
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-bounds-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing Bounds Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defensive-coding-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defensive Coding Practices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defensive Coding Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-initialize-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Initialize Everything
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-use-safe-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Use Safe Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-document-security-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Document Security Decisions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-avoid-dangerous-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Avoid Dangerous Patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-test-edge-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Test Edge Cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-markers-in-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Markers in Code
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Markers in Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SECURITY:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SECURITY WARNING:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#todo-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TODO SECURITY:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-security-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Security Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Future Security Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#already-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Already Implemented
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-for-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned for Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Planned for Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Protection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Protection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-checklist-for-new-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Checklist for New Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#team-decision-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team Decision Log
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-security-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Security Matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Principles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-defense-in-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Defense in Depth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fail-secure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Fail Secure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-least-privilege" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Least Privilege
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-validate-all-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Validate All Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-vulnerabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Vulnerabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Vulnerabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buffer-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Buffer Overflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integer-overflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integer Overflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#null-pointer-dereference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Null Pointer Dereference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-after-free" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use After Free
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-bounds-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing Bounds Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defensive-coding-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defensive Coding Practices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defensive Coding Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-initialize-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Initialize Everything
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-use-safe-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Use Safe Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-document-security-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Document Security Decisions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-avoid-dangerous-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Avoid Dangerous Patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-test-edge-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Test Edge Cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-markers-in-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Markers in Code
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Markers in Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SECURITY:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SECURITY WARNING:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#todo-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TODO SECURITY:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-security-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Security Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Future Security Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#already-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Already Implemented
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#planned-for-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned for Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Planned for Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Protection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Protection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-checklist-for-new-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Checklist for New Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#team-decision-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team Decision Log
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="security-considerations-for-deltaos-kernel">Security Considerations for DeltaOS Kernel</h1>
+<p>A guide to understanding and maintaining security in the DeltaOS kernel.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#why-security-matters">Why Security Matters</a></li>
+<li><a href="#security-principles">Security Principles</a></li>
+<li><a href="#common-vulnerabilities">Common Vulnerabilities</a></li>
+<li><a href="#defensive-coding-practices">Defensive Coding Practices</a></li>
+<li><a href="#security-markers-in-code">Security Markers in Code</a></li>
+<li><a href="#future-security-features">Future Security Features</a></li>
+</ol>
+<hr />
+<h2 id="why-security-matters">Why Security Matters</h2>
+<p>The kernel is the <strong>most privileged</strong> code in the system. It has:
+- Full access to all memory
+- Control over all hardware
+- Authority over all processes</p>
+<p>A security flaw in the kernel means:
+- <strong>Complete system compromise</strong>: Attackers gain full control
+- <strong>No recovery</strong>: There's no higher authority to fix things
+- <strong>Data exposure</strong>: All user data becomes accessible</p>
+<p>This is why we treat security as a first-class concern in DeltaOS.</p>
+<hr />
+<h2 id="security-principles">Security Principles</h2>
+<h3 id="1-defense-in-depth">1. Defense in Depth</h3>
+<p>Never rely on a single security check. Layer multiple protections:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// Multiple validation layers</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">boot_info</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">           </span><span class="c1">// Layer 1: NULL check</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">boot_info</span><span class="o">-&gt;</span><span class="n">magic</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">EXPECTED_MAGIC</span><span class="p">)</span><span class="w"> </span><span class="p">...</span><span class="w">    </span><span class="c1">// Layer 2: Magic check</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">boot_info</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MAX_SIZE</span><span class="p">)</span><span class="w"> </span><span class="p">...</span><span class="w">            </span><span class="c1">// Layer 3: Size check</span>
+</code></pre></div>
+<h3 id="2-fail-secure">2. Fail Secure</h3>
+<p>When in doubt, stop. Don't try to "work around" problems:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// WRONG: Try to continue despite error</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ERROR</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// &quot;Fix&quot; the error and continue</span>
+<span class="p">}</span>
+
+<span class="c1">// RIGHT: Stop when something is wrong</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ERROR</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">panic</span><span class="p">(</span><span class="s">&quot;Critical error: cannot continue safely&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="3-least-privilege">3. Least Privilege</h3>
+<p>Give code only the access it needs, no more:</p>
+<ul>
+<li>Memory pages: Only grant read/write/execute as needed</li>
+<li>Hardware access: Only enable what's required</li>
+<li>Capabilities: Future processes get minimal permissions by default</li>
+</ul>
+<h3 id="4-validate-all-inputs">4. Validate All Inputs</h3>
+<p>Never trust data from external sources. This includes:
+- Boot information from the bootloader
+- Data from hardware devices
+- File system contents
+- User input</p>
+<hr />
+<h2 id="common-vulnerabilities">Common Vulnerabilities</h2>
+<h3 id="buffer-overflow">Buffer Overflow</h3>
+<p><strong>What</strong>: Writing beyond the end of a buffer, corrupting adjacent memory.</p>
+<p><strong>Example Attack</strong>:
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// VULNERABLE:</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+<span class="n">strcpy</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">user_input</span><span class="p">);</span><span class="w">  </span><span class="c1">// If user_input &gt; 10 chars, overflow!</span>
+</code></pre></div></p>
+<p><strong>Prevention in DeltaOS</strong>:
+- Always track buffer sizes
+- Use bounds-checked operations
+- Validate sizes before copying</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// SAFE:</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">buffer_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ERROR_TOO_LARGE</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">buffer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">source</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="integer-overflow">Integer Overflow</h3>
+<p><strong>What</strong>: Arithmetic that wraps around due to fixed-size integers.</p>
+<p><strong>Example Attack</strong>:
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// VULNERABLE:</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">total_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">element_size</span><span class="p">;</span><span class="w">  </span><span class="c1">// Can overflow!</span>
+<span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocate</span><span class="p">(</span><span class="n">total_size</span><span class="p">);</span><span class="w">      </span><span class="c1">// Allocates tiny buffer</span>
+<span class="n">copy_into</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">element_size</span><span class="p">);</span><span class="w"> </span><span class="c1">// Overflows!</span>
+</code></pre></div></p>
+<p><strong>Prevention in DeltaOS</strong>:
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// SAFE: Check before arithmetic</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">U32_MAX</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">element_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ERROR_OVERFLOW</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">total_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">element_size</span><span class="p">;</span>
+</code></pre></div></p>
+<h3 id="null-pointer-dereference">Null Pointer Dereference</h3>
+<p><strong>What</strong>: Following a pointer that doesn't point to valid memory.</p>
+<p><strong>Prevention</strong>:
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// Always check before use</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ptr</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ERROR_NULL_POINTER</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w">  </span><span class="c1">// Now safe</span>
+</code></pre></div></p>
+<h3 id="use-after-free">Use After Free</h3>
+<p><strong>What</strong>: Using memory after it's been freed.</p>
+<p><strong>Prevention</strong>:
+<div class="language-c highlight"><pre><span></span><code><span class="n">free</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+<span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">  </span><span class="c1">// Set to NULL immediately</span>
+<span class="c1">// Any future use with NULL check will fail safely</span>
+</code></pre></div></p>
+<h3 id="missing-bounds-check">Missing Bounds Check</h3>
+<p><strong>What</strong>: Accessing arrays without verifying the index is valid.</p>
+<p><strong>Prevention</strong>:
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// ALWAYS check array bounds</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">array_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ERROR_OUT_OF_BOUNDS</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+</code></pre></div></p>
+<hr />
+<h2 id="defensive-coding-practices">Defensive Coding Practices</h2>
+<h3 id="1-initialize-everything">1. Initialize Everything</h3>
+<p>Uninitialized variables can contain dangerous garbage values:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// DANGEROUS:</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">flags</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">SOMETHING</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// flags is garbage!</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+
+<span class="c1">// SAFE:</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="2-use-safe-types">2. Use Safe Types</h3>
+<p>Our <code>types.h</code> provides fixed-width types that prevent surprises:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// Instead of:</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">      </span><span class="c1">// Could be 16, 32, or 64 bits!</span>
+
+<span class="c1">// Use:</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">      </span><span class="c1">// Always exactly 32 bits</span>
+</code></pre></div>
+<h3 id="3-document-security-decisions">3. Document Security Decisions</h3>
+<p>Mark security-critical code with comments:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// SECURITY: This check prevents buffer overflow</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MAX_ALLOWED_SIZE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ERROR</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="4-avoid-dangerous-patterns">4. Avoid Dangerous Patterns</h3>
+<table>
+<thead>
+<tr>
+<th>Avoid</th>
+<th>Use Instead</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raw pointer arithmetic</td>
+<td>Bounds-checked access</td>
+</tr>
+<tr>
+<td>Unchecked casts</td>
+<td>Explicit validation</td>
+</tr>
+<tr>
+<td>Magic numbers</td>
+<td>Named constants</td>
+</tr>
+<tr>
+<td>Implicit fallthrough</td>
+<td>Explicit break statements</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-test-edge-cases">5. Test Edge Cases</h3>
+<p>Security bugs often hide in edge cases:
+- Empty inputs (size = 0)
+- Maximum values (SIZE_MAX)
+- Boundary conditions (off-by-one)
+- Malformed data</p>
+<hr />
+<h2 id="security-markers-in-code">Security Markers in Code</h2>
+<p>Throughout DeltaOS code, look for these comment markers:</p>
+<h3 id="security">SECURITY:</h3>
+<p>Marks a line or block that's specifically for security:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// SECURITY: Validate magic before trusting any other fields</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">magic</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">EXPECTED_MAGIC</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="security-warning">SECURITY WARNING:</h3>
+<p>Calls attention to potentially dangerous code that must be used carefully:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// SECURITY WARNING: This function has no bounds checking!</span>
+<span class="c1">// Caller must ensure buffer is large enough.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">unsafe_copy</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="todo-security">TODO SECURITY:</h3>
+<p>Marks security improvements that should be made:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// TODO SECURITY: Add stack canary checking here</span>
+</code></pre></div>
+<hr />
+<h2 id="future-security-features">Future Security Features</h2>
+<h3 id="already-implemented">Already Implemented</h3>
+<ul>
+<li>✅ Input validation on boot info</li>
+<li>✅ Bounds checking on array access</li>
+<li>✅ Integer overflow prevention</li>
+<li>✅ Defensive initialization</li>
+</ul>
+<h3 id="planned-for-implementation">Planned for Implementation</h3>
+<h4 id="memory-protection">Memory Protection</h4>
+<ol>
+<li><strong>NX (No-Execute) Bit</strong>: Prevent code execution in data pages</li>
+<li><strong>Write-XOR-Execute</strong>: Pages are either writable OR executable, never both</li>
+<li><strong>Guard Pages</strong>: Unmapped pages between allocations to catch overflows</li>
+<li><strong>ASLR (Address Space Layout Randomization)</strong>: Randomize memory locations</li>
+</ol>
+<h4 id="runtime-protection">Runtime Protection</h4>
+<ol>
+<li><strong>Stack Canaries</strong>: Detect stack buffer overflows</li>
+<li><strong>KASLR</strong>: Randomize kernel load address</li>
+<li><strong>SMEP/SMAP</strong>: Prevent kernel from executing/accessing user memory</li>
+</ol>
+<h4 id="access-control">Access Control</h4>
+<ol>
+<li><strong>Capability System</strong>: Fine-grained permission control</li>
+<li><strong>Sandboxing</strong>: Isolate processes from each other</li>
+<li><strong>Secure Boot</strong>: Verify kernel integrity before execution</li>
+</ol>
+<hr />
+<h2 id="security-checklist-for-new-code">Security Checklist for New Code</h2>
+<p>Before submitting new code, verify:</p>
+<ul>
+<li>[ ] All pointers checked for NULL before dereference</li>
+<li>[ ] All array accesses bounds-checked</li>
+<li>[ ] All arithmetic checked for overflow where size is involved</li>
+<li>[ ] All input from external sources validated</li>
+<li>[ ] All security decisions documented with comments</li>
+<li>[ ] Error cases handled by failing safely</li>
+<li>[ ] Variables initialized to safe default values</li>
+<li>[ ] Code compiles without warnings (<code>-Wall -Wextra -Werror</code>)</li>
+</ul>
+<hr />
+<h2 id="team-decision-log">Team Decision Log</h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Decision</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial</td>
+<td>snake_case naming</td>
+<td>Standard in kernel code, improves readability</td>
+</tr>
+<tr>
+<td>Initial</td>
+<td>Treatment of warnings as errors</td>
+<td>Catches potential security issues early</td>
+</tr>
+<tr>
+<td>Initial</td>
+<td>Comprehensive input validation</td>
+<td>Defense in depth protects against bootloader bugs</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>This document is part of the DeltaOS Documentation. Security is everyone's responsibility.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

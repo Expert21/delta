@@ -1,0 +1,2365 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../boot/protocol/">
+      
+      
+        <link rel="next" href="../security/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>C Programming Guide for Kernel Development - DeltaOS Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#c-programming-guide-for-kernel-development" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DeltaOS Docs" class="md-header__button md-logo" aria-label="DeltaOS Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DeltaOS Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              C Programming Guide for Kernel Development
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="paper" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DeltaOS Docs" class="md-nav__button md-logo" aria-label="DeltaOS Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DeltaOS Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Boot
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Boot
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../boot/protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Delta Boot Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C Programming Guide for Kernel Development
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C Programming Guide for Kernel Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is C?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is C?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-c-for-kernels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why C for Kernels?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-vs-other-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C vs Other Languages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-syntax-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C Syntax Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C Syntax Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statements-and-semicolons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statements and Semicolons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blocks-and-braces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Blocks and Braces
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables-and-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Variables and Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Variables and Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Variable?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declaring-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declaring Variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-types-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Types Matter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pointers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pointers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pointers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-pointer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Pointer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointer-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pointer Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-pointers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Pointers?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#null-pointers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NULL Pointers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Function?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calling Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#void" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        void
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Control Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ifelse-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        if/else Statements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparisons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logical-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical Operators
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#while-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        while Loops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        for Loops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switch-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        switch Statements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Structure?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining Structures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing Members
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typedef" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typedef
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-preprocessor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Preprocessor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Preprocessor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#include" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #include
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #define
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ifdef-ifndef" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #ifdef / #ifndef
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-kernel-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading Kernel Code
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading Kernel Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Organization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finding-your-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding Your Way
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-checking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Checking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iterating-through-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iterating Through Arrays
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iterating-through-linked-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iterating Through Linked Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bit-manipulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bit Manipulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safe-pointer-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safe Pointer Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Considerations for DeltaOS Kernel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is C?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is C?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-c-for-kernels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why C for Kernels?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-vs-other-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C vs Other Languages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-syntax-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C Syntax Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C Syntax Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statements-and-semicolons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statements and Semicolons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blocks-and-braces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Blocks and Braces
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables-and-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Variables and Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Variables and Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Variable?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declaring-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declaring Variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-types-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Types Matter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pointers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pointers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pointers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-pointer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Pointer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointer-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pointer Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-pointers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Pointers?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#null-pointers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NULL Pointers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Function?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calling Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#void" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        void
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Control Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ifelse-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        if/else Statements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparisons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logical-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical Operators
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#while-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        while Loops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        for Loops
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switch-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        switch Statements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structures
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a Structure?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining Structures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing Members
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typedef" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typedef
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-preprocessor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Preprocessor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Preprocessor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#include" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #include
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #define
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ifdef-ifndef" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        #ifdef / #ifndef
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-kernel-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading Kernel Code
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading Kernel Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Organization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finding-your-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding Your Way
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-checking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Checking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iterating-through-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iterating Through Arrays
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iterating-through-linked-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iterating Through Linked Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bit-manipulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bit Manipulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safe-pointer-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safe Pointer Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="c-programming-guide-for-kernel-development">C Programming Guide for Kernel Development</h1>
+<p>A companion guide for DeltaOS team members who are new to C programming.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#what-is-c">What is C?</a></li>
+<li><a href="#c-syntax-basics">C Syntax Basics</a></li>
+<li><a href="#variables-and-types">Variables and Types</a></li>
+<li><a href="#pointers">Pointers</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#control-flow">Control Flow</a></li>
+<li><a href="#structures">Structures</a></li>
+<li><a href="#the-preprocessor">The Preprocessor</a></li>
+<li><a href="#reading-kernel-code">Reading Kernel Code</a></li>
+<li><a href="#common-patterns">Common Patterns</a></li>
+</ol>
+<hr />
+<h2 id="what-is-c">What is C?</h2>
+<p>C is a programming language created in 1972 that remains the dominant language for operating system development. Nearly every major OS kernel (Linux, Windows, macOS, *BSD) is written primarily in C.</p>
+<h3 id="why-c-for-kernels">Why C for Kernels?</h3>
+<ol>
+<li><strong>Direct Hardware Access</strong>: C can manipulate memory addresses and hardware registers directly</li>
+<li><strong>No Runtime Dependencies</strong>: C code doesn't need any external libraries to run</li>
+<li><strong>Predictable Performance</strong>: You know exactly what the CPU will do</li>
+<li><strong>Close to the Metal</strong>: The language maps almost directly to machine instructions</li>
+</ol>
+<h3 id="c-vs-other-languages">C vs Other Languages</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>C</th>
+<th>Python</th>
+<th>JavaScript</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compiled/Interpreted</td>
+<td>Compiled</td>
+<td>Interpreted</td>
+<td>Interpreted</td>
+</tr>
+<tr>
+<td>Memory Management</td>
+<td>Manual</td>
+<td>Automatic</td>
+<td>Automatic</td>
+</tr>
+<tr>
+<td>Type System</td>
+<td>Static</td>
+<td>Dynamic</td>
+<td>Dynamic</td>
+</tr>
+<tr>
+<td>Runs without OS</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="c-syntax-basics">C Syntax Basics</h2>
+<h3 id="comments">Comments</h3>
+<p>Comments are notes for humans that the compiler ignores:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// This is a single-line comment</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * This is a multi-line comment.</span>
+<span class="cm"> * We use these extensively in DeltaOS.</span>
+<span class="cm"> */</span>
+</code></pre></div>
+<h3 id="statements-and-semicolons">Statements and Semicolons</h3>
+<p>Every statement in C ends with a semicolon:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">          </span><span class="c1">// Declare and assign a variable</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">          </span><span class="c1">// Modify the variable</span>
+<span class="n">console_puts</span><span class="p">(</span><span class="s">&quot;Hi&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// Call a function</span>
+</code></pre></div>
+<h3 id="blocks-and-braces">Blocks and Braces</h3>
+<p>Curly braces <code>{ }</code> group multiple statements:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">statement1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">statement2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">statement3</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="variables-and-types">Variables and Types</h2>
+<h3 id="what-is-a-variable">What is a Variable?</h3>
+<p>A variable is a named storage location in memory. In C, every variable has:
+- A <strong>name</strong> (how you refer to it)
+- A <strong>type</strong> (what kind of data it holds)
+- A <strong>value</strong> (the data itself)</p>
+<h3 id="basic-types">Basic Types</h3>
+<p>In DeltaOS, we use custom types defined in <code>types.h</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Size</th>
+<th>Description</th>
+<th>Example Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>u8</code></td>
+<td>1 byte</td>
+<td>Unsigned 8-bit</td>
+<td>0 to 255</td>
+</tr>
+<tr>
+<td><code>u16</code></td>
+<td>2 bytes</td>
+<td>Unsigned 16-bit</td>
+<td>0 to 65,535</td>
+</tr>
+<tr>
+<td><code>u32</code></td>
+<td>4 bytes</td>
+<td>Unsigned 32-bit</td>
+<td>0 to ~4 billion</td>
+</tr>
+<tr>
+<td><code>u64</code></td>
+<td>8 bytes</td>
+<td>Unsigned 64-bit</td>
+<td>0 to ~18 quintillion</td>
+</tr>
+<tr>
+<td><code>i32</code></td>
+<td>4 bytes</td>
+<td>Signed 32-bit</td>
+<td>-2 billion to +2 billion</td>
+</tr>
+<tr>
+<td><code>bool</code></td>
+<td>1 byte</td>
+<td>True or false</td>
+<td><code>true</code> or <code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="declaring-variables">Declaring Variables</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// Syntax: type name;</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">counter</span><span class="p">;</span><span class="w">           </span><span class="c1">// Declare a 32-bit unsigned integer</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">is_ready</span><span class="p">;</span><span class="w">         </span><span class="c1">// Declare a boolean</span>
+
+<span class="c1">// Syntax: type name = initial_value;</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">       </span><span class="c1">// Declare and initialize to 0</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">is_ready</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="c1">// Declare and initialize to false</span>
+</code></pre></div>
+<h3 id="why-types-matter">Why Types Matter</h3>
+<p>In C, the type determines:
+1. How much memory the variable uses
+2. What operations are valid
+3. How the data is interpreted</p>
+<div class="language-c highlight"><pre><span></span><code><span class="n">u8</span><span class="w"> </span><span class="n">small</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w">   </span><span class="c1">// Maximum value for u8</span>
+<span class="n">small</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">small</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// OVERFLOW! Wraps to 0, not 256</span>
+</code></pre></div>
+<hr />
+<h2 id="pointers">Pointers</h2>
+<blockquote>
+<p><strong>This is the most important concept in C!</strong></p>
+</blockquote>
+<h3 id="what-is-a-pointer">What is a Pointer?</h3>
+<p>A pointer is a variable that holds a <strong>memory address</strong> instead of a regular value.</p>
+<p>Think of memory like a giant array of numbered boxes:</p>
+<div class="language-text highlight"><pre><span></span><code>Memory:
+┌─────┬─────┬─────┬─────┬─────┬─────┐
+│ ... │ 42  │ ... │ ... │ ... │ ... │
+└─────┴─────┴─────┴─────┴─────┴─────┘
+        ↑
+     Address 0x1000
+</code></pre></div>
+<p>A pointer is a variable that stores the address (0x1000), not the value (42).</p>
+<h3 id="pointer-syntax">Pointer Syntax</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// The * in a declaration means &quot;pointer to&quot;</span>
+<span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w">              </span><span class="c1">// ptr is a &quot;pointer to u32&quot;</span>
+
+<span class="c1">// The &amp; operator gets the address of a variable</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+<span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">;</span><span class="w">          </span><span class="c1">// ptr now holds the address of &#39;value&#39;</span>
+
+<span class="c1">// The * operator follows a pointer to its value (dereference)</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">copy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w">       </span><span class="c1">// copy is now 42 (the value at the address)</span>
+</code></pre></div>
+<h3 id="visual-example">Visual Example</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="n">u32</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span><span class="w">     </span><span class="c1">// Create variable &#39;value&#39; with value 42</span>
+<span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">;</span><span class="w">  </span><span class="c1">// Create pointer &#39;ptr&#39; pointing to &#39;value&#39;</span>
+
+<span class="c1">// Memory now looks like:</span>
+<span class="c1">// </span>
+<span class="c1">// Address:    0x1000         0x2000</span>
+<span class="c1">//            ┌───────┐      ┌───────┐</span>
+<span class="c1">// Value:     │   42  │      │ 0x1000│</span>
+<span class="c1">//            └───────┘      └───────┘</span>
+<span class="c1">//               ↑              │</span>
+<span class="c1">//            &#39;value&#39;        &#39;ptr&#39; (points to value)</span>
+</code></pre></div>
+<h3 id="why-pointers">Why Pointers?</h3>
+<ol>
+<li><strong>Efficiency</strong>: Pass large data without copying</li>
+<li><strong>Modification</strong>: Functions can modify caller's variables</li>
+<li><strong>Dynamic Data</strong>: Build linked structures</li>
+<li><strong>Hardware</strong>: Access specific memory addresses</li>
+</ol>
+<h3 id="null-pointers">NULL Pointers</h3>
+<p>A pointer that doesn't point anywhere valid is <code>NULL</code>:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">   </span><span class="c1">// ptr points to nothing</span>
+
+<span class="c1">// ALWAYS check before using!</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ptr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span><span class="w">  </span><span class="c1">// Safe to dereference</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="functions">Functions</h2>
+<h3 id="what-is-a-function">What is a Function?</h3>
+<p>A function is a reusable block of code that:
+1. Has a name
+2. May take inputs (parameters)
+3. May return an output</p>
+<h3 id="function-syntax">Function Syntax</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// Syntax: return_type function_name(parameter_type parameter_name, ...)</span>
+
+<span class="c1">// Function that takes no parameters and returns nothing</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">say_hello</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">console_puts</span><span class="p">(</span><span class="s">&quot;Hello!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Function that takes parameters and returns a value</span>
+<span class="n">u32</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Function that modifies a value through a pointer</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">increment</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="o">*</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="calling-functions">Calling Functions</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="n">say_hello</span><span class="p">();</span><span class="w">              </span><span class="c1">// Call with no arguments</span>
+
+<span class="n">u32</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w">   </span><span class="c1">// Call with arguments, store result</span>
+
+<span class="n">u32</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="n">increment</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">);</span><span class="w">            </span><span class="c1">// Pass address of x</span>
+<span class="c1">// x is now 11</span>
+</code></pre></div>
+<h3 id="void">void</h3>
+<p>The keyword <code>void</code> means "nothing":
+- <code>void</code> return type: Function doesn't return anything
+- <code>void</code> parameter: Function takes no parameters
+- <code>void *</code>: A pointer to "anything" (generic pointer)</p>
+<hr />
+<h2 id="control-flow">Control Flow</h2>
+<h3 id="ifelse-statements">if/else Statements</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Executed if condition is true</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">other_condition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Executed if first was false, this is true</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Executed if all conditions were false</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="comparisons">Comparisons</h3>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>==</code></td>
+<td>Equal to</td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>Not equal to</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>Less than</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>Greater than</td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>Less than or equal</td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>Greater than or equal</td>
+</tr>
+</tbody>
+</table>
+<h3 id="logical-operators">Logical Operators</h3>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>AND (both must be true)</td>
+</tr>
+<tr>
+<td><code>||</code></td>
+<td>OR (at least one must be true)</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>NOT (inverts true/false)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="while-loops">while Loops</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Repeat while condition is true</span>
+<span class="p">}</span>
+
+<span class="c1">// Example: Count from 0 to 9</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">console_put_dec</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="for-loops">for Loops</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">initialization</span><span class="p">;</span><span class="w"> </span><span class="n">condition</span><span class="p">;</span><span class="w"> </span><span class="n">update</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Repeat while condition is true</span>
+<span class="p">}</span>
+
+<span class="c1">// Example: Count from 0 to 9</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">console_put_dec</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="switch-statements">switch Statements</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+<span class="w">    </span><span class="c1">// Do something for value == 1</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span>
+<span class="w">    </span><span class="c1">// Do something for value == 2</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="k">default</span><span class="o">:</span>
+<span class="w">    </span><span class="c1">// Do something for any other value</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="structures">Structures</h2>
+<h3 id="what-is-a-structure">What is a Structure?</h3>
+<p>A structure groups related variables together into a single unit.</p>
+<h3 id="defining-structures">Defining Structures</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// Define a structure type</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">point</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Create a variable of this type</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">point</span><span class="w"> </span><span class="n">origin</span><span class="p">;</span>
+<span class="n">origin</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="n">origin</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// Or initialize at declaration</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">point</span><span class="w"> </span><span class="n">cursor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="p">};</span>
+</code></pre></div>
+<h3 id="accessing-members">Accessing Members</h3>
+<p>Use the <code>.</code> operator for regular structures:
+<div class="language-c highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">point</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">x_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</code></pre></div></p>
+<p>Use the <code>-&gt;</code> operator for pointers to structures:
+<div class="language-c highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">point</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">p</span><span class="p">;</span>
+<span class="n">ptr</span><span class="o">-&gt;</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">        </span><span class="c1">// Same as (*ptr).x = 10</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">x_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptr</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">;</span>
+</code></pre></div></p>
+<h3 id="typedef">typedef</h3>
+<p>The <code>typedef</code> keyword creates a shorter name:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// Without typedef:</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">db_boot_info</span><span class="w"> </span><span class="n">info</span><span class="p">;</span>
+
+<span class="c1">// With typedef:</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">db_boot_info</span><span class="w"> </span><span class="n">db_boot_info_t</span><span class="p">;</span>
+<span class="n">db_boot_info_t</span><span class="w"> </span><span class="n">info</span><span class="p">;</span><span class="w">  </span><span class="c1">// Same thing, shorter name</span>
+</code></pre></div>
+<hr />
+<h2 id="the-preprocessor">The Preprocessor</h2>
+<p>The preprocessor runs <em>before</em> the C compiler and handles lines starting with <code>#</code>.</p>
+<h3 id="include">#include</h3>
+<p>Copies the contents of another file:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;types.h&quot;</span><span class="c1">       // Include our types.h file</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;boot_info.h&quot;</span><span class="c1">   // Include boot_info.h file</span>
+</code></pre></div>
+<h3 id="define">#define</h3>
+<p>Creates a text replacement (macro):</p>
+<div class="language-c highlight"><pre><span></span><code><span class="cp">#define PAGE_SIZE 4096      </span><span class="c1">// Replace PAGE_SIZE with 4096</span>
+<span class="cp">#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))  </span><span class="c1">// Function-like macro</span>
+
+<span class="n">u32</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PAGE_SIZE</span><span class="p">;</span><span class="w">       </span><span class="c1">// Becomes: u32 size = 4096;</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">bigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MAX</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span><span class="w">     </span><span class="c1">// Becomes: u32 bigger = ((x) &gt; (y) ? (x) : (y));</span>
+</code></pre></div>
+<h3 id="ifdef-ifndef">#ifdef / #ifndef</h3>
+<p>Conditional compilation:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="cp">#ifndef TYPES_H    </span><span class="c1">// If TYPES_H is NOT defined...</span>
+<span class="cp">#define TYPES_H    </span><span class="c1">// Define it</span>
+
+<span class="c1">// ... file contents ...</span>
+
+<span class="cp">#endif             </span><span class="c1">// End the conditional</span>
+</code></pre></div>
+<p>This pattern (called an "include guard") prevents a file from being included twice.</p>
+<hr />
+<h2 id="reading-kernel-code">Reading Kernel Code</h2>
+<h3 id="code-organization">Code Organization</h3>
+<p>DeltaOS kernel code follows these conventions:</p>
+<ol>
+<li><strong>Files in pairs</strong>: <code>foo.h</code> (declarations) and <code>foo.c</code> (implementations)</li>
+<li><strong>Header files (<code>.h</code>)</strong>: Tell you <em>what</em> is available</li>
+<li><strong>Source files (<code>.c</code>)</strong>: Show <em>how</em> it works</li>
+</ol>
+<h3 id="finding-your-way">Finding Your Way</h3>
+<div class="language-text highlight"><pre><span></span><code>kernel/
+├── types.h       &lt;- Basic types (start here!)
+├── boot_info.h   &lt;- Boot protocol structures
+├── boot_info.c   &lt;- Boot info parsing
+├── console.h     &lt;- Console output interface
+├── console.c     &lt;- Console implementation
+├── panic.h       &lt;- Panic interface
+├── panic.c       &lt;- Panic implementation
+└── main.c        &lt;- Kernel entry point
+</code></pre></div>
+<h3 id="reading-a-function">Reading a Function</h3>
+<p>When reading a function, look for:</p>
+<ol>
+<li><strong>Doc comment above</strong>: Describes purpose, parameters, return value</li>
+<li><strong>Function signature</strong>: Name, parameters, return type</li>
+<li><strong>Security comments</strong>: Lines marked <code>// SECURITY:</code></li>
+<li><strong>Step comments</strong>: Major steps are labeled</li>
+</ol>
+<p>Example from our code:
+<div class="language-c highlight"><pre><span></span><code><span class="cm">/*</span>
+<span class="cm"> * boot_info_validate - Check if boot info is valid</span>
+<span class="cm"> * </span>
+<span class="cm"> * Parameters:</span>
+<span class="cm"> *   info - Pointer to the boot info structure</span>
+<span class="cm"> * </span>
+<span class="cm"> * Returns:</span>
+<span class="cm"> *   true if valid, false otherwise</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">boot_info_validate</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">db_boot_info</span><span class="w"> </span><span class="o">*</span><span class="n">info</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Check 1: NULL pointer check</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">info</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// ... more checks ...</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<hr />
+<h2 id="common-patterns">Common Patterns</h2>
+<h3 id="error-checking">Error Checking</h3>
+<p>Always check for errors before proceeding:</p>
+<div class="language-c highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">boot_info_validate</span><span class="p">(</span><span class="n">boot_info</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">panic</span><span class="p">(</span><span class="s">&quot;Invalid boot info!&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="iterating-through-arrays">Iterating Through Arrays</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Process array[i]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="iterating-through-linked-data">Iterating Through Linked Data</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">db_tag</span><span class="w"> </span><span class="o">*</span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">boot_info_get_next_tag</span><span class="p">(</span><span class="n">info</span><span class="p">,</span><span class="w"> </span><span class="n">tag</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Process tag</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="bit-manipulation">Bit Manipulation</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// Check if a bit is set</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">bit_number</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Bit is set</span>
+<span class="p">}</span>
+
+<span class="c1">// Set a bit</span>
+<span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flags</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">bit_number</span><span class="p">);</span>
+
+<span class="c1">// Clear a bit</span>
+<span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">bit_number</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="safe-pointer-usage">Safe Pointer Usage</h3>
+<div class="language-c highlight"><pre><span></span><code><span class="c1">// Always check before dereferencing</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ptr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Initialize pointers to NULL</span>
+<span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+
+<span class="c1">// Set to NULL after freeing</span>
+<span class="n">free</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+<span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</code></pre></div>
+<hr />
+<h2 id="next-steps">Next Steps</h2>
+<p>After reading this guide:</p>
+<ol>
+<li>Read <code>kernel/types.h</code> - it's heavily commented</li>
+<li>Read <code>kernel/main.c</code> - follow the boot sequence</li>
+<li>Look at <code>kernel/console.c</code> - see a complete subsystem</li>
+<li>Try making small changes and rebuilding</li>
+</ol>
+<p>Remember: <strong>Ask questions!</strong> The best way to learn is to be curious.</p>
+<hr />
+<p><em>This guide is part of the DeltaOS Documentation. Team Decision: Basic C concepts explained here, advanced concepts in code comments.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>
