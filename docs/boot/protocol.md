@@ -1,4 +1,4 @@
-# DB — Delta Boot Protocol
+# Delta Boot Protocol
 
 ## Overview
 

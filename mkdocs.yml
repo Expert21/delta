@@ -1,0 +1,10 @@
+site_name: DeltaOS Docs
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: pink
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
