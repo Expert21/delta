@@ -109,6 +109,12 @@ treated as zero during computation.
 | 7   | `DB_REQ_HAS_TAGS`     | Request tags follow the header                   |
 | 8-31| Reserved              | Must be zero                                     |
 
+### Flags and Tags Precedence
+
+- **Flag set, no tag:** Bootloader provides the feature with default values
+- **Flag set, tag present:** Bootloader uses tag values (tag refines the request)
+- **Flag not set, tag present:** Tag is ignored (flag must be set to enable feature)
+
 ---
 
 ## Part 1b: Request Tags
