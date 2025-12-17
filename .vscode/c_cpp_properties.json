@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "DeltaOS Kernel",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "__KERNEL__",
+                "__x86_64__"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerArgs": [
+                "-ffreestanding",
+                "-fno-stack-protector",
+                "-fno-pic",
+                "-mno-red-zone",
+                "-mno-sse",
+                "-mno-sse2",
+                "-mno-mmx"
+            ]
+        }
+    ],
+    "version": 4
+}
