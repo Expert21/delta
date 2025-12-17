@@ -1,7 +1,26 @@
+# Build Artifacts
 *.o
 *.elf
-*.cache/
-.github/
 *.bin
+*.iso
+*.img
+
+# Temporary Files
+*.tmp
+*.log
+*.swp
+
+# Editor/IDE Configuration
 .vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+c_cpp_properties.json
 compile_commands.json
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
