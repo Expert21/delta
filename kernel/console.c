@@ -1,65 +1,7 @@
-/*
- * =============================================================================
- * DeltaOS Kernel - Console Output Implementation
- * =============================================================================
- *
- * File: kernel/console.c
- *
- * PURPOSE:
- * --------
- * This file implements the console output functions defined in console.h.
- * It draws text to the framebuffer using an embedded bitmap font.
- *
- * HOW FRAMEBUFFERS WORK:
- * ----------------------
- * A framebuffer is a region of memory where each position corresponds to
- * a pixel on the screen. The bootloader tells us:
- *   - Where in memory the framebuffer is (address)
- *   - How big the screen is (width x height)
- *   - How many bytes per pixel (bpp / 8)
- *   - How many bytes per row (pitch)
- *
- * To draw a pixel at position (x, y) with 32-bit color:
- *   pixel_address = framebuffer_address + (y * pitch) + (x * 4)
- *   *pixel_address = color_value
- *
- * SECURITY CONSIDERATIONS:
- * ------------------------
- * - We must validate all coordinates are within screen bounds
- * - The framebuffer address comes from the bootloader (trusted)
- * - We never read from the framebuffer (write-only for security)
- *
- * =============================================================================
- */
-
 #include "console.h"
 
-/* =============================================================================
- * SECTION 1: Embedded Bitmap Font
- * =============================================================================
- *
- * This is a simple 8x16 pixel bitmap font for ASCII characters 32-126.
- * Each character is represented as 16 bytes, one per row, where each bit
- * represents a pixel (1 = foreground color, 0 = background color).
- *
- * The font data is stored in ROM (read-only memory) since it never changes.
- * We only include printable ASCII characters to save space.
- *
- * Example: The letter 'A' (ASCII 65) might look like:
- *   Row 0:  0b00011000 = 0x18    ...##...
- *   Row 1:  0b00111100 = 0x3C    ..####..
- *   Row 2:  0b01100110 = 0x66    .##..##.
- *   Row 3:  0b01100110 = 0x66    .##..##.
- *   Row 4:  0b01111110 = 0x7E    .######.
- *   Row 5:  0b01100110 = 0x66    .##..##.
- *   ... and so on for all 16 rows
- */
-
-/*
- * Font data: 8x16 bitmap font for ASCII 32-126 (95 characters)
- * Each character is 16 bytes (one byte per row, 8 bits per row)
- */
 static const u8 console_font[95][16] = {
+
     /* Space (32) */
     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
      0x00, 0x00, 0x00, 0x00},
@@ -347,124 +289,47 @@ static const u8 console_font[95][16] = {
      0x00, 0x00, 0x00, 0x00},
 };
 
-/* =============================================================================
- * SECTION 2: Console State
- * =============================================================================
- *
- * State variables that track the console's current configuration.
- * These are "static" meaning they're only visible within this file.
- */
+static u8 *fb_address = NULL;
+/* Framebuffer memory address */
+static u32 fb_width = 0;  /* Screen width in pixels */
+static u32 fb_height = 0; /* Screen height in pixels */
+static u32 fb_pitch = 0;  /* Bytes per row */
+static u8 fb_bpp = 0;     /* Bits per pixel */
 
-/*
- * Framebuffer information
- */
-static u8 *fb_address = NULL; /* Framebuffer memory address */
-static u32 fb_width = 0;      /* Screen width in pixels */
-static u32 fb_height = 0;     /* Screen height in pixels */
-static u32 fb_pitch = 0;      /* Bytes per row */
-static u8 fb_bpp = 0;         /* Bits per pixel */
-
-/*
- * Pixel format information
- */
 static u8 fb_red_shift = 0;
 static u8 fb_green_shift = 0;
 static u8 fb_blue_shift = 0;
 
-/*
- * Console dimensions (in characters, not pixels)
- */
 static u32 console_cols = 0; /* Characters per row */
 static u32 console_rows = 0; /* Rows on screen */
 
-/*
- * Cursor position (in characters)
- */
 static u32 cursor_x = 0; /* Current column */
 static u32 cursor_y = 0; /* Current row */
 
-/*
- * Current colors
- */
 static console_color_t current_fg = CONSOLE_WHITE;
 static console_color_t current_bg = CONSOLE_BLACK;
 
-/*
- * Initialization state
- */
 static bool console_initialized = false;
 
-/* =============================================================================
- * SECTION 3: Internal Helper Functions
- * =============================================================================
- */
-
-/*
- * color_to_pixel - Convert a console color to the framebuffer pixel format
- *
- * Parameters:
- *   color - The console color (0xAARRGGBB format)
- *
- * Returns:
- *   The color converted to the framebuffer's pixel format
- *
- * This handles different pixel formats (BGR, RGB, etc.) that different
- * hardware might use.
- */
 static u32 color_to_pixel(console_color_t color) {
-  /*
-   * Extract RGB components from our standard format
-   */
+
   u8 red = (color >> 16) & 0xFF;
   u8 green = (color >> 8) & 0xFF;
   u8 blue = color & 0xFF;
 
-  /*
-   * Reassemble in the framebuffer's format using its shift values
-   */
   return ((u32)red << fb_red_shift) | ((u32)green << fb_green_shift) |
          ((u32)blue << fb_blue_shift);
 }
 
-/*
- * put_pixel - Draw a single pixel to the framebuffer
- *
- * Parameters:
- *   x     - X coordinate (0 = left)
- *   y     - Y coordinate (0 = top)
- *   color - Pixel color in framebuffer format
- *
- * SECURITY: Bounds checking is performed to prevent buffer overflows.
- */
 static void put_pixel(u32 x, u32 y, u32 color) {
-  /*
-   * Bounds check - prevent writing outside the framebuffer
-   *
-   * SECURITY: This is CRITICAL! Without this check, a bug in the
-   * console code could write to arbitrary memory locations.
-   */
+
   if (x >= fb_width || y >= fb_height) {
     return; /* Out of bounds, silently ignore */
   }
 
-  /*
-   * Calculate the memory address of this pixel
-   *
-   * Formula: address = base + (y * pitch) + (x * bytes_per_pixel)
-   *
-   * We use pitch (not width * bpp) because rows may have padding bytes.
-   */
   u32 bytes_per_pixel = fb_bpp / 8;
   u8 *pixel = fb_address + (y * fb_pitch) + (x * bytes_per_pixel);
 
-  /*
-   * Write the color value
-   *
-   * We handle different bits-per-pixel settings:
-   *   32 bpp: 4 bytes per pixel (most common on modern systems)
-   *   24 bpp: 3 bytes per pixel (less common)
-   *   16 bpp: 2 bytes per pixel (older systems)
-   */
   switch (fb_bpp) {
   case 32:
     *((u32 *)pixel) = color;
@@ -483,36 +348,14 @@ static void put_pixel(u32 x, u32 y, u32 color) {
   }
 }
 
-/*
- * draw_char - Draw a character at a specific position
- *
- * Parameters:
- *   c  - The character to draw (ASCII 32-126)
- *   x  - Character column (not pixel X)
- *   y  - Character row (not pixel Y)
- *   fg - Foreground color
- *   bg - Background color
- */
 static void draw_char(char c, u32 col, u32 row, console_color_t fg,
                       console_color_t bg) {
-  /*
-   * Calculate pixel coordinates from character position
-   */
+
   u32 px = col * CONSOLE_FONT_WIDTH;
   u32 py = row * CONSOLE_FONT_HEIGHT;
-
-  /*
-   * Convert colors to framebuffer format
-   */
   u32 fg_pixel = color_to_pixel(fg);
   u32 bg_pixel = color_to_pixel(bg);
 
-  /*
-   * Get the font data for this character
-   *
-   * The font only covers ASCII 32-126. Characters outside this range
-   * are replaced with a placeholder (space or question mark).
-   */
   const u8 *glyph;
   if (c >= 32 && c <= 126) {
     glyph = console_font[c - 32];
@@ -521,52 +364,21 @@ static void draw_char(char c, u32 col, u32 row, console_color_t fg,
     glyph = console_font[0];
   }
 
-  /*
-   * Draw the character pixel by pixel
-   *
-   * Each byte in the font data represents one row of the character.
-   * Each bit represents one pixel (1 = foreground, 0 = background).
-   * Bit 7 is the leftmost pixel, bit 0 is the rightmost.
-   */
   for (u32 font_row = 0; font_row < CONSOLE_FONT_HEIGHT; font_row++) {
     u8 row_data = glyph[font_row];
 
     for (u32 font_col = 0; font_col < CONSOLE_FONT_WIDTH; font_col++) {
-      /*
-       * Check if this bit is set (leftmost bit first)
-       *
-       * We use (7 - font_col) because bit 7 is the leftmost pixel
-       * and we're iterating left to right.
-       */
       u32 color = (row_data & (1 << (7 - font_col))) ? fg_pixel : bg_pixel;
       put_pixel(px + font_col, py + font_row, color);
     }
   }
 }
 
-/*
- * scroll_screen - Scroll the screen up by one line
- *
- * When the cursor reaches the bottom of the screen, we need to scroll
- * everything up to make room for the new line.
- */
 static void scroll_screen(void) {
-  /*
-   * Move all rows up by one row height
-   *
-   * We do this by copying each pixel row to the row above it.
-   * This is not the most efficient method, but it's simple and correct.
-   */
   u32 row_size = fb_pitch;
   u32 scroll_amount = CONSOLE_FONT_HEIGHT * row_size;
   u32 copy_size = (console_rows - 1) * CONSOLE_FONT_HEIGHT * row_size;
 
-  /*
-   * Copy memory: destination = source - scroll_amount
-   *
-   * We do a simple byte-by-byte copy. This could be optimized with
-   * SIMD instructions or DMA in the future.
-   */
   u8 *dest = fb_address;
   u8 *src = fb_address + scroll_amount;
 
@@ -574,9 +386,6 @@ static void scroll_screen(void) {
     dest[i] = src[i];
   }
 
-  /*
-   * Clear the last row (fill with background color)
-   */
   u32 bg_pixel = color_to_pixel(current_bg);
   u32 last_row_start = (console_rows - 1) * CONSOLE_FONT_HEIGHT;
 
@@ -587,18 +396,8 @@ static void scroll_screen(void) {
   }
 }
 
-/* =============================================================================
- * SECTION 4: Public API Implementation
- * =============================================================================
- */
-
-/*
- * console_init - Initialize the console with framebuffer info
- */
 bool console_init(const struct db_tag_framebuffer *fb) {
-  /*
-   * Validate input
-   */
+
   if (fb == NULL) {
     return false;
   }
@@ -611,9 +410,6 @@ bool console_init(const struct db_tag_framebuffer *fb) {
     return false; /* Unsupported bit depth */
   }
 
-  /*
-   * Store framebuffer parameters
-   */
   fb_address = (u8 *)fb->address;
   fb_width = fb->width;
   fb_height = fb->height;
@@ -624,47 +420,28 @@ bool console_init(const struct db_tag_framebuffer *fb) {
   fb_green_shift = fb->green_shift;
   fb_blue_shift = fb->blue_shift;
 
-  /*
-   * Calculate console dimensions
-   */
   console_cols = fb_width / CONSOLE_FONT_WIDTH;
   console_rows = fb_height / CONSOLE_FONT_HEIGHT;
-
-  /*
-   * Must have at least some usable space
-   */
   if (console_cols == 0 || console_rows == 0) {
     return false;
   }
 
-  /*
-   * Initialize cursor and colors
-   */
   cursor_x = 0;
   cursor_y = 0;
   current_fg = CONSOLE_WHITE;
   current_bg = CONSOLE_BLACK;
 
-  /*
-   * Clear the screen
-   */
   console_initialized = true;
   console_clear();
 
   return true;
 }
 
-/*
- * console_clear - Clear the screen
- */
 void console_clear(void) {
   if (!console_initialized) {
     return;
   }
 
-  /*
-   * Fill the entire screen with the background color
-   */
   u32 bg_pixel = color_to_pixel(current_bg);
 
   for (u32 y = 0; y < fb_height; y++) {
@@ -673,46 +450,31 @@ void console_clear(void) {
     }
   }
 
-  /*
-   * Reset cursor to top-left
-   */
   cursor_x = 0;
   cursor_y = 0;
 }
 
-/*
- * console_set_color - Set the current foreground and background colors
- */
 void console_set_color(console_color_t fg, console_color_t bg) {
   current_fg = fg;
   current_bg = bg;
 }
 
-/*
- * console_putc - Write a single character to the console
- */
 void console_putc(char c) {
   if (!console_initialized) {
     return;
   }
 
-  /*
-   * Handle special characters
-   */
   switch (c) {
   case '\n':
-    /* Newline - move to start of next line */
     cursor_x = 0;
     cursor_y++;
     break;
 
   case '\r':
-    /* Carriage return - move to start of current line */
     cursor_x = 0;
     break;
 
   case '\t':
-    /* Tab - advance to next 8-column boundary */
     cursor_x = (cursor_x + 8) & ~7;
     if (cursor_x >= console_cols) {
       cursor_x = 0;
@@ -721,18 +483,15 @@ void console_putc(char c) {
     break;
 
   case '\b':
-    /* Backspace - move cursor back one position */
     if (cursor_x > 0) {
       cursor_x--;
     }
     break;
 
   default:
-    /* Regular character - draw it and advance cursor */
     draw_char(c, cursor_x, cursor_y, current_fg, current_bg);
     cursor_x++;
 
-    /* Wrap to next line if needed */
     if (cursor_x >= console_cols) {
       cursor_x = 0;
       cursor_y++;
@@ -740,89 +499,49 @@ void console_putc(char c) {
     break;
   }
 
-  /*
-   * Scroll if cursor has moved past the bottom of the screen
-   */
   if (cursor_y >= console_rows) {
     scroll_screen();
     cursor_y = console_rows - 1;
   }
 }
 
-/*
- * console_puts - Write a null-terminated string to the console
- */
 void console_puts(const char *str) {
   if (!console_initialized || str == NULL) {
     return;
   }
-
-  /*
-   * Output each character until we hit the null terminator
-   *
-   * SECURITY: We rely on the string being properly null-terminated.
-   * Passing a non-terminated string would read into arbitrary memory.
-   */
   while (*str) {
     console_putc(*str);
     str++;
   }
 }
 
-/*
- * console_newline - Move to the next line
- */
 void console_newline(void) { console_putc('\n'); }
 
-/*
- * console_put_hex - Write a hexadecimal number to the console
- */
 void console_put_hex(u64 value) {
   if (!console_initialized) {
     return;
   }
 
-  /*
-   * Character lookup table for hexadecimal digits
-   */
   static const char hex_chars[] = "0123456789ABCDEF";
 
-  /*
-   * Print "0x" prefix
-   */
   console_puts("0x");
 
-  /*
-   * Print each nibble (4 bits) from most significant to least
-   *
-   * 64-bit value = 16 nibbles
-   */
   for (int i = 60; i >= 0; i -= 4) {
     u8 nibble = (value >> i) & 0xF;
     console_putc(hex_chars[nibble]);
   }
 }
 
-/*
- * console_put_dec - Write a decimal number to the console
- */
 void console_put_dec(u64 value) {
   if (!console_initialized) {
     return;
   }
 
-  /*
-   * Handle zero specially
-   */
   if (value == 0) {
     console_putc('0');
     return;
   }
 
-  /*
-   * Build the string backwards (least significant digit first)
-   * Maximum u64 is 18446744073709551615 (20 digits)
-   */
   char buffer[21];
   int pos = 20;
   buffer[pos] = '\0';
@@ -833,38 +552,9 @@ void console_put_dec(u64 value) {
     value /= 10;
   }
 
-  /*
-   * Print the result
-   */
   console_puts(&buffer[pos]);
 }
 
-/*
- * console_get_width - Get the console width in characters
- */
 u32 console_get_width(void) { return console_cols; }
-
-/*
- * console_get_height - Get the console height in characters
- */
 u32 console_get_height(void) { return console_rows; }
-
-/*
- * console_is_initialized - Check if the console is ready
- */
 bool console_is_initialized(void) { return console_initialized; }
-
-/*
- * =============================================================================
- * END OF FILE: kernel/console.c
- * =============================================================================
- *
- * FUTURE IMPROVEMENTS:
- * --------------------
- * - Hardware cursor support
- * - Double buffering for flicker-free updates
- * - Unicode support
- * - Scrollback buffer
- * - More efficient scrolling using hardware features
- * =============================================================================
- */
